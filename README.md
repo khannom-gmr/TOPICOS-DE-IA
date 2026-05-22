@@ -1,10 +1,10 @@
-# 🔍 Algoritmos de Búsqueda y Optimización
+#  Algoritmos de Búsqueda y Optimización
 
 Proyecto en **C++** que implementa y visualiza algoritmos de búsqueda en grafos y resolución del **Problema del Viajero (TSP)** mediante un Algoritmo Genético.
 
 ---
 
-## 📁 Estructura general
+##  Estructura general
 
 ```
 ├── asterisco.cpp / .h          # Lógica visual, cuadrícula, animación, callbacks
@@ -16,7 +16,7 @@ Proyecto en **C++** que implementa y visualiza algoritmos de búsqueda en grafos
 
 ---
 
-## 🗺️ Módulo 1 — Visualizador de Búsqueda en Grafos
+##  Módulo 1 — Visualizador de Búsqueda en Grafos
 
 Aplicación interactiva con **OpenGL** que compara A\*, Dijkstra y BFS sobre una cuadrícula configurable con obstáculos. Incluye animación paso a paso de nodos generados, expandidos y ruta final.
 
@@ -67,7 +67,7 @@ Usa una cola **FIFO** y explora por niveles. No considera pesos — cada arista 
 
 ---
 
-## 🧬 Módulo 2 — TSP con Algoritmo Genético
+##  Módulo 2 — TSP con Algoritmo Genético
 
 Solucionador por línea de comandos del **Problema del Viajero** sobre 8 ciudades peruanas. El TSP es NP-difícil: el algoritmo genético no garantiza la solución óptima, pero encuentra soluciones muy buenas en tiempo razonable.
 
@@ -124,14 +124,14 @@ Distancia total: 6487 km
 
 ---
 
-## ⚙️ Dependencias
+##  Dependencias
 
 - C++17
 - OpenGL / GLFW — módulo de visualización
 
 ---
 
-## 🏗️ Compilación
+##  Compilación
 
 ```bash
 # Módulo de visualización
