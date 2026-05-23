@@ -5,7 +5,7 @@
 #include <limits>
 #include <queue>
 
-namespace {
+namespace{
 
 constexpr float kInfinito = std::numeric_limits<float>::infinity();
 
@@ -99,7 +99,7 @@ EjecucionAEstrella ejecutarAEstrella(
         {-1, -1}
     };
 
-    while (!conjunto_abierto.empty()) {
+    while (!conjunto_abierto.empty()){
         NodoCola actual = conjunto_abierto.top();
         conjunto_abierto.pop();
 

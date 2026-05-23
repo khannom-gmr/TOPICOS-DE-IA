@@ -3,7 +3,7 @@
 
 #include <vector>
 
-struct NodoCuadricula {
+struct NodoCuadricula{
     int id;
     int col;
     int row;
