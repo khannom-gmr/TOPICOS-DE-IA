@@ -121,11 +121,3 @@ Repite el proceso para `W1, b1, W2, b2, W3, b3` (en el mismo orden al guardar y 
 | `data/README_MNIST.md` | Instrucciones para descargar el dataset. |
 | `Makefile` / `CMakeLists.txt` | Sistemas de compilación. |
 
-## Crear rama git
-
-```bash
-git checkout -b mlp-cuda
-git add .
-git commit -m "Implementación MLP en CUDA con comparativa CPU vs GPU"
-git push origin mlp-cuda
-```
