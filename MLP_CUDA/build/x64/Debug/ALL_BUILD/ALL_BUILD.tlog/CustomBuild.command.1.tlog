@@ -1,0 +1,10 @@
+^C:\USERS\YORSH\DOWNLOADS\IA TOPICS\TOPICOS-DE-IA\MLP_CUDA\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SC:/Users/yorsh/Downloads/IA TOPICS/TOPICOS-DE-IA/MLP_CUDA" "-BC:/Users/yorsh/Downloads/IA TOPICS/TOPICOS-DE-IA/MLP_CUDA/build" --check-stamp-file "C:/Users/yorsh/Downloads/IA TOPICS/TOPICOS-DE-IA/MLP_CUDA/build/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
