@@ -30,42 +30,15 @@ transpuesta, actualización de pesos, etc.) están implementados manualmente; no
 - GPU NVIDIA con capacidad de cómputo compatible. El proyecto está configurado para
   `sm_89` (Ada Lovelace, p. ej. RTX 4070 Ti Super). Ajusta el valor si tu GPU es distinta.
 
-## Instalación de CUDA Toolkit en Windows (paso a paso)
 
-1. Verifica que tienes una GPU NVIDIA y el driver actualizado desde
-   *GeForce Experience* o https://www.nvidia.com/Download/index.aspx.
-2. Descarga el instalador de **CUDA Toolkit 12.x** desde
-   https://developer.nvidia.com/cuda-downloads (Windows → x86_64 → versión de tu SO →
-   `exe (local)`).
-3. Ejecuta el instalador y elige la instalación **Express (recomendada)**.
-4. Instala **Visual Studio 2022** con la carga de trabajo *Desktop development with C++*
-   (CUDA necesita el compilador `cl.exe` de MSVC en Windows).
-5. Al terminar, las variables de entorno `CUDA_PATH` y el `PATH` quedan configuradas
-   automáticamente. Reinicia la terminal.
-
-> En Linux, instala el toolkit con el paquete oficial de tu distribución o el instalador
-> `.run` de NVIDIA, y añade `/usr/local/cuda/bin` al `PATH`.
-
-## Configurar VS Code para CUDA
-
-Instala estas extensiones desde el Marketplace:
-
-- **C/C++** (Microsoft) — IntelliSense y depuración.
-- **Nsight Visual Studio Code Edition** (NVIDIA) — soporte y depuración de CUDA.
-- **CMake Tools** (Microsoft) — configurar y compilar con CMake desde el editor.
-
-Para que IntelliSense reconozca los headers de CUDA, añade la ruta de includes del toolkit
-(p. ej. `C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.x/include`) en
-`c_cpp_properties.json`.
-
-## Verificar que la GPU es detectada
+## Verificar que la GPU es detectada y que esta instalado el nvcc
 
 ```bash
 nvidia-smi        # muestra la GPU, el driver y la versión de CUDA soportada
 nvcc --version    # muestra la versión del compilador CUDA instalado
 ```
 
-## Descargar MNIST
+## Descargar data usada de MNIST
 
 Coloca los 4 archivos `.ubyte` en el directorio `data/`. Las instrucciones detalladas
 están en [`data/README_MNIST.md`](data/README_MNIST.md).
@@ -111,13 +84,10 @@ Epoca  1 | Loss: 1.8401 | Accuracy: 62.87%
 Epoca 10 | Loss: 0.3794 | Accuracy: 93.89%
 Tiempo GPU: 3.91 segundos
 
-================================
    Comparativa CPU vs GPU
-================================
 CPU | Tiempo: 47.23s | Accuracy: 93.45%
 GPU | Tiempo:  3.91s | Accuracy: 93.89%
 Speedup: 12.08x
-================================
 ```
 
 > Los tiempos exactos y el speedup dependen del hardware (CPU y GPU concretas).
