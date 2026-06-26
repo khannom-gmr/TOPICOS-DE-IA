@@ -38,11 +38,6 @@ nvidia-smi        # muestra la GPU, el driver y la versión de CUDA soportada
 nvcc --version    # muestra la versión del compilador CUDA instalado
 ```
 
-## Descargar data usada de MNIST
-
-Coloca los 4 archivos `.ubyte` en el directorio `data/`. Las instrucciones detalladas
-están en [`data/README_MNIST.md`](data/README_MNIST.md).
-
 ## Compilar
 
 ### Con make
