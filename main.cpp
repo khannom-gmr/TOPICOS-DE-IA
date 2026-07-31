@@ -2,140 +2,131 @@
 #include <vector>
 using namespace std;
 
-// FUNCIÓN DE ACTIVACIÓN
+// activacion
 int funcion_activacion(float entrada_neta) {
-    if (entrada_neta >= 0)
-        return 1;
-    else
-        return 0;
+  if (entrada_neta >= 0)
+    return 1;
+  else
+    return 0;
 }
 
-// REGLA DE PROPAGACIÓN
+// propagacion
 float calcular_entrada_neta(vector<float> pesos, vector<int> entradas) {
-    float suma = 0;
+  float suma = 0;
 
-    for (int i = 0; i < pesos.size(); i++) {
-        suma += pesos[i] * entradas[i];
-    }
+  for (int i = 0; i < pesos.size(); i++) {
+    suma += pesos[i] * entradas[i];
+  }
 
-    return suma;
+  return suma;
 }
 
-// ESTADO DE ACTIVACIÓN
+// estado de activacion
 int estado_activacion(vector<int> entradas, vector<float> pesos) {
-    float z = calcular_entrada_neta(pesos, entradas);
-    return funcion_activacion(z);
+  float z = calcular_entrada_neta(pesos, entradas);
+  return funcion_activacion(z);
 }
 
-// ENTRENAMIENTO DEL PERCEPTRÓN
-vector<float> entrenar_perceptron(
-    vector<vector<int>> datos_entrada,
-    vector<int> salidas_deseadas,
-    float tasa_aprendizaje = 0.5,
-    int epocas = 100
-) {
+// ENTRENAMIENTO DEL PERCEPTRON
+vector<float> entrenar_perceptron(vector<vector<int>> datos_entrada,
+                                  vector<int> salidas_deseadas,
+                                  float tasa_aprendizaje = 0.5,
+                                  int epocas = 100) {
 
-    int num_caracteristicas = datos_entrada[0].size();
+  int num_caracteristicas = datos_entrada[0].size();
 
-    // Inicializar pesos en 0
-    vector<float> pesos(num_caracteristicas, 0);
+  // Inicializar pesos en 0
+  vector<float> pesos(num_caracteristicas, 0);
 
-    for (int epoca = 0; epoca < epocas; epoca++) {
+  for (int epoca = 0; epoca < epocas; epoca++) {
 
-        cout << "\nEpoca " << epoca + 1 << endl;
+    cout << "\nEpoca " << epoca + 1 << endl;
 
-        int errores = 0;
+    int errores = 0;
 
-        for (int i = 0; i < datos_entrada.size(); i++) {
+    for (int i = 0; i < datos_entrada.size(); i++) {
 
-            vector<int> x_i = datos_entrada[i];
-            int t = salidas_deseadas[i];
+      vector<int> x_i = datos_entrada[i];
+      int t = salidas_deseadas[i];
 
-            float z = calcular_entrada_neta(pesos, x_i);
+      float z = calcular_entrada_neta(pesos, x_i);
 
-            int y = funcion_activacion(z);
+      int y = funcion_activacion(z);
 
-            int error = t - y;
+      int error = t - y;
 
-            // MOSTRAR DATOS
-            cout << "Entrada x: ";
+      // MOSTRAR DATOS
+      cout << "Entrada x: ";
 
-            for (int j = 0; j < x_i.size(); j++) {
-                cout << x_i[j] << " ";
-            }
+      for (int j = 0; j < x_i.size(); j++) {
+        cout << x_i[j] << " ";
+      }
 
-            cout << " z: " << z
-                 << " y: " << y
-                 << " t: " << t
-                 << " error: " << error
-                 << " pesos: ";
+      cout << " z: " << z << " y: " << y << " t: " << t << " error: " << error
+           << " pesos: ";
 
-            for (int j = 0; j < pesos.size(); j++) {
-                cout << pesos[j] << " ";
-            }
+      for (int j = 0; j < pesos.size(); j++) {
+        cout << pesos[j] << " ";
+      }
 
-            cout << endl;
+      cout << endl;
 
-            // ACTUALIZAR PESOS
-            if (error != 0) {
+      // ACTUALIZAR PESOS
+      if (error != 0) {
 
-                for (int j = 0; j < pesos.size(); j++) {
-                    pesos[j] = pesos[j] + tasa_aprendizaje * error * x_i[j];
-                }
-
-                errores++;
-            }
+        for (int j = 0; j < pesos.size(); j++) {
+          pesos[j] = pesos[j] + tasa_aprendizaje * error * x_i[j];
         }
 
-        // SI YA NO HAY ERRORES
-        if (errores == 0) {
-            cout << "\nEntrenamiento finalizado." << endl;
-            break;
-        }
+        errores++;
+      }
     }
 
-    return pesos;
+    // SI YA NO HAY ERRORES
+    if (errores == 0) {
+      cout << "\nEntrenamiento finalizado." << endl;
+      break;
+    }
+  }
+
+  return pesos;
 }
 
 int main() {
 
-    // ENTRADAS (x0 = 1)
-    vector<vector<int>> datos_entrada = {
-        {1, 0, 0},
-        {1, 1, 0},
-        {1, 0, 1},
-        {1, 1, 1}
-    };
+  // ENTRADAS (x0 = 1)
+  vector<vector<int>> datos_entrada = {
+      {1, 0, 0}, {1, 1, 0}, {1, 0, 1}, {1, 1, 1}};
 
-    // SALIDAS DESEADAS PARA AND
-    vector<int> salidas_deseadas = {0, 0, 0, 1};
+  // SALIDAS DESEADAS PARA AND
+  vector<int> salidas_deseadas = {0, 0, 0, 1};
 
-    // ENTRENAMIENTO
-    vector<float> pesos_finales =
-        entrenar_perceptron(datos_entrada, salidas_deseadas);
+  // ENTRENAMIENTO
+  vector<float> pesos_finales =
+      entrenar_perceptron(datos_entrada, salidas_deseadas);
 
-    // MOSTRAR PESOS FINALES
-    cout << "\nPesos finales aprendidos: ";
+  // MOSTRAR PESOS FINALES
+  cout << "\nPesos finales aprendidos: ";
 
-    for (int i = 0; i < pesos_finales.size(); i++) {
-        cout << pesos_finales[i] << " ";
+  for (int i = 0; i < pesos_finales.size(); i++) {
+    cout << pesos_finales[i] << " ";
+  }
+
+  // PRUEBAS
+  cout << "\n\nPrueba del perceptron entrenado:" << endl;
+
+  for (int i = 0; i < datos_entrada.size(); i++) {
+
+    int y = estado_activacion(datos_entrada[i], pesos_finales);
+
+    cout << "Entrada X: ";
+
+    for (int j = 0; j < datos_entrada[i].size(); j++) {
+      cout << datos_entrada[i][j] << " ";
     }
 
-    // PRUEBAS
-    cout << "\n\nPrueba del perceptron entrenado:" << endl;
+    cout << " -> Salida Y: " << y << endl;
+  }
 
-    for (int i = 0; i < datos_entrada.size(); i++) {
-
-        int y = estado_activacion(datos_entrada[i], pesos_finales);
-
-        cout << "Entrada X: ";
-
-        for (int j = 0; j < datos_entrada[i].size(); j++) {
-            cout << datos_entrada[i][j] << " ";
-        }
-
-        cout << " -> Salida Y: " << y << endl;
-    }
-
-    return 0;
+  return 0;
 }

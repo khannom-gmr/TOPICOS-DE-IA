@@ -1,0 +1,30 @@
+# Build directories
+build/
+bin/
+lib/
+out/
+.vs/
+*.user
+*.suo
+
+# Binary data & checkpoints
+data/train-images-idx3-ubyte
+data/train-labels-idx1-ubyte
+data/t10k-images-idx3-ubyte
+data/t10k-labels-idx1-ubyte
+checkpoints/*.bin
+
+# Compiled binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.obj
+*.o
+*.pdb
+
+# Temp & Logs
+*.log
+scratch/

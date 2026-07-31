@@ -140,3 +140,83 @@ g++ -std=c++17 main.cpp asterisco.cpp astar_algorithm.cpp dijkstra_algorithm.cpp
 # Módulo TSP
 g++ -std=c++17 main.cpp genetic_algorithm.cpp -o tsp_genetico
 ```
+
+
+---
+
+## Modulo 3 — Vision Transformer (ViT) para MNIST en C++ y CUDA
+
+Implementacion desde cero de un **Vision Transformer (ViT)** para clasificar los 10 digitos del dataset MNIST. Sin frameworks de deep learning - solo STL de C++, cuBLAS y kernels CUDA propios.
+
+### Estructura del Modulo ViT
+
+```
+├── CMakeLists.txt          # Raiz: incluye vit_cpp y vit_cuda
+├── data/
+│   └── download_mnist.py   # Script para descargar MNIST automaticamente
+├── vit_cpp/                # Proyecto C++ CPU independiente
+│   ├── include/            # Encabezados (tensor, layers, attention, transformer)
+│   ├── src/                # Implementacion C++ puro
+│   ├── apps/               # Ejecutables (train_cpu.cpp, inference.cpp)
+│   └── tests/              # Pruebas unitarias (41/41 pasadas)
+└── vit_cuda/               # Proyecto CUDA GPU independiente
+    ├── include/            # Encabezados CUDA (cuda_tensor, kernels, etc.)
+    ├── src/                # Kernels CUDA y clases GPU (.cu)
+    └── apps/               # Ejecutable (train_gpu.cpp)
+```
+
+### Arquitectura ViT
+
+```
+[B, 784]  ->  PatchEmbed(7x7, 16 parches)  ->  Linear [49->64]
+          ->  + CLS token + pos_embed        ->  [B, 17, 64]
+          ->  4x TransformerBlock            ->  [B, 17, 64]
+               L- LayerNorm -> MHSA (4 cabezas, head_dim=16)
+               L- LayerNorm -> MLP (64->128->GELU->64)
+          ->  CLS[:, 0, :]                   ->  [B, 64]
+          ->  LayerNorm -> Linear(64->10)    ->  [B, 10]
+```
+
+### Instrucciones de Compilacion y Ejecucion
+
+#### 1. Descargar MNIST
+```bash
+python data/download_mnist.py
+```
+
+#### 2. Compilar con CMake
+```bash
+cmake -B build
+cmake --build build --config Release
+```
+
+#### 3. Entrenar en GPU (CUDA)
+```bash
+./build/bin/Release/vit_cuda.exe --datos ./data --epocas 10 --lote 128
+```
+
+#### 4. Entrenar en CPU
+```bash
+./build/bin/Release/vit_cpu.exe --datos ./data --epocas 10 --lote 64
+```
+
+#### 5. Inferencia y Matriz de Confusion
+```bash
+./build/bin/Release/vit_infer.exe --checkpoint ./checkpoints/vit_gpu_epoca10.bin --datos ./data
+```
+
+#### 6. Pruebas Unitarias
+```bash
+./build/bin/Release/test_tensor.exe
+./build/bin/Release/test_attention.exe
+./build/bin/Release/test_mnist.exe ./data
+```
+
+### Resultados Reales (GPU — RTX 4070 Ti Super)
+
+```
+Epoca [ 1/10]  perdida=0.8928  exactitud=70.32%  tiempo=84.5s
+Epoca [ 2/10]  perdida=0.2798  exactitud=91.34%  tiempo=85.8s
+Epoca [ 3/10]  perdida=0.1406  exactitud=95.81%  tiempo=83.9s
+==> Prueba  perdida=0.1361  exactitud=95.74%
+```
