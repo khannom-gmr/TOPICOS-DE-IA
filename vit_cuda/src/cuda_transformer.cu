@@ -352,8 +352,8 @@ void CudaViT::build_registry() {
 }
 
 void CudaViT::save(const std::string& path) const {
-    std::ofstream f(path, std::ios::binary);
-    if (!f) throw std::runtime_error("No se puede escribir: " + path);
+    std::ofstream f(path, std::ios::binary | std::ios::out);
+    if (!f.is_open()) throw std::runtime_error("No se puede escribir: " + path);
 
     auto params = const_cast<CudaViT*>(this)->parameters();
     int n = (int)params.size();
@@ -367,6 +367,8 @@ void CudaViT::save(const std::string& path) const {
         p->to_host(h);
         f.write(reinterpret_cast<const char*>(h.data()), h.size() * sizeof(float));
     }
+    f.flush();
+    f.close();
 }
 
 void CudaViT::load(const std::string& path) {

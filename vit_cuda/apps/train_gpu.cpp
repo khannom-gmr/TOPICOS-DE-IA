@@ -219,7 +219,10 @@ int main(int argc, char** argv) {
     log.info("Evaluando en conjunto de prueba...");
     {
         vit::utils::MetricsTracker rastreador; rastreador.reset();
+        int conf[10][10] = {};
         int n = prueba.num_samples;
+        int C = cfg.num_classes;
+
         for (int inicio = 0; inicio < n; inicio += tam_lote) {
             int fin = std::min(inicio + tam_lote, n);
             int B   = fin - inicio;
@@ -233,9 +236,40 @@ int main(int argc, char** argv) {
             auto logits = modelo.forward(x_host, B);
             auto [perdida, correctos] = modelo.loss_and_accuracy(logits, etiquetas, B);
             rastreador.update(perdida, correctos, B);
+
+            std::vector<float> h_logits(B * C);
+            logits.to_host(h_logits);
+            for (int b = 0; b < B; ++b) {
+                int real = etiquetas[b];
+                int pred = (int)(std::max_element(&h_logits[b * C], &h_logits[b * C] + C) - &h_logits[b * C]);
+                conf[real][pred]++;
+            }
         }
         auto stats = rastreador.compute(0.0);
         log.log_test(stats.avg_loss, stats.accuracy);
+
+        log.separator();
+        log.info("Exactitud por digito:");
+        for (int c = 0; c < 10; ++c) {
+            int total_c = 0;
+            for (int p = 0; p < 10; ++p) total_c += conf[c][p];
+            float acc = total_c > 0 ? 100.f * conf[c][c] / total_c : 0.f;
+            std::cout << "  Digito " << c << ": " << std::fixed << std::setprecision(1)
+                      << acc << "%  (" << conf[c][c] << "/" << total_c << ")\n";
+        }
+
+        log.separator();
+        log.info("Matriz de confusion (filas=real, columnas=predicho):");
+        std::cout << "\n      ";
+        for (int c = 0; c < 10; ++c) std::cout << std::setw(5) << c;
+        std::cout << "\n";
+        for (int real = 0; real < 10; ++real) {
+            std::cout << "  " << real << "  |";
+            for (int pred = 0; pred < 10; ++pred)
+                std::cout << std::setw(5) << conf[real][pred];
+            std::cout << "\n";
+        }
+        std::cout << "\n";
     }
     log.separator();
 
